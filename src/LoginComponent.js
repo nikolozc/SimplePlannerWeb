@@ -10,12 +10,15 @@ function LoginComponent() {
   };
 
   return (
-    <div className="container">
-      <h2>Welcome to SimplePlanner</h2>
-      <p>Please sign in to continue:</p>
-      <button className="button" onClick={signInWithGoogle}>Sign in with Google</button>
+    <div className="login-container">
+        <div className="login-content">
+            <h1 className="login-header">Welcome to SimplePlanner</h1>
+            <button className="google-signin-button" onClick={signInWithGoogle}>
+                Sign in with Google
+            </button>
+        </div>
     </div>
-  );
+);
 }
 
 export default LoginComponent;

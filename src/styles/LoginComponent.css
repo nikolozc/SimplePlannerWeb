@@ -1,28 +1,45 @@
-body {
-    background-color: #1b1b1b; /* 60% - Dominant deep dark grey */
-    color: #e0e0e0; /* Light text for readability on dark background */
-  }
-  
-  .container {
-    width: 80%;
-    margin: 50px auto;
-    padding: 20px;
-    background-color: #333333; /* 30% - Secondary medium-dark grey */
-    border-radius: 5px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  }
-  
-  .button {
-    background-color: #DAA520; /* 10% - Burnished Gold */
-    padding: 12px 20px;
-    border: none;
-    border-radius: 5px;
+.login-container {
+    background-color: #2c2c2c; /* Dominant color */
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     color: white;
-    font-weight: bold;
+    font-family: 'Arial', sans-serif;
+}
+
+.login-header {
+    font-size: 2em;
+    margin-bottom: 20px;
+    color: #DAA520; /* Accent color for main heading */
+}
+
+.google-signin-button {
+    background-color: #DAA520; /* Accent color */
+    border: none;
+    color: #2c2c2c; /* Dominant color for contrast */
+    padding: 10px 20px;
+    border-radius: 5px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  .button:hover {
-    background-color: #c8941d; /* Darkened version of Burnished Gold on hover */
-  }
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Shadow for the button */
+
+    /* Secondary color for hover effect */
+}
+
+.google-signin-button:hover {
+    background-color: #c8961d;
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2); /* Slightly enhanced shadow on hover */
+}
+
+/* Smaller centered container */
+.login-content {
+    background-color: #444; /* Secondary color */
+    padding: 40px;
+    border-radius: 8px;
+    width: 80%;
+    max-width: 400px; /* Limit the width */
+    text-align: center; /* Center the inner content */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a shadow for the container */
+}

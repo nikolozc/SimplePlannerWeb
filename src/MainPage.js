@@ -6,13 +6,21 @@ import './styles/MainPage.css';
 
 function MainPage() {
     const [boards, setBoards] = useState([]);
-    const [boardName, setBoardName] = useState('');
+    const [userInfo, setUserInfo] = useState(null);
+    const [showBoardInput, setShowBoardInput] = useState(false);
+    const [inputValue, setInputValue] = useState('');
+    const [activeBoard, setActiveBoard] = useState(null);
+
+    useEffect(() => {
+        if(auth.currentUser) {
+            setUserInfo(auth.currentUser.displayName || auth.currentUser.email);
+        }
+    }, [auth.currentUser]);
 
     const handleLogout = async () => {
         try {
             await signOut(auth);
             console.log('Successfully signed out');
-            // Redirect or do something after logging out if needed
         } catch (error) {
             console.error('Error signing out: ', error);
         }
@@ -24,10 +32,9 @@ function MainPage() {
             const docRef = await addDoc(collection(db, "boards"), {
                 name: boardName,
                 owner: owner,
-                members: [owner]  // Start with just the owner in members
+                members: [owner]  // Need to add other members in the future
             });
             console.log("Document written with ID: ", docRef.id);
-            setBoardName('');  // Clearing the input field
         } catch (e) {
             console.error("Error adding document: ", e);
         }
@@ -39,7 +46,8 @@ function MainPage() {
         const querySnapshot = await getDocs(boardQuery);
         const fetchedBoards = [];
         querySnapshot.forEach((doc) => {
-            fetchedBoards.push(doc.data());
+            let data = doc.data();
+            fetchedBoards.push({ id: doc.id, ...data });
         });
         setBoards(fetchedBoards);
     };
@@ -62,7 +70,8 @@ function MainPage() {
         const unsubscribe = onSnapshot(boardQuery, (snapshot) => {
             const updatedBoards = [];
             snapshot.forEach((doc) => {
-                updatedBoards.push(doc.data());
+                let data = doc.data();
+                updatedBoards.push({ id: doc.id, ...data });
             });
             callback(updatedBoards);
         });
@@ -72,22 +81,50 @@ function MainPage() {
 
     return (
         <div className="main-container">
-            <h1 className="main-header">Welcome to MainPage</h1>
-            <div>
-                {boards.map((board, index) => (
-                    <div key={index}>
-                        <h2>{board.name}</h2>
-                        {/* You can display other board details here */}
-                    </div>
-                ))}
+            <div className="top-panel">
+                <button className="logout-button" onClick={handleLogout}>Logout</button>
+                <span className="user-info">{userInfo}</span>
             </div>
-            <input 
-                value={boardName}
-                onChange={e => setBoardName(e.target.value)}
-                placeholder="Enter board name"
-            />
-            <button onClick={() => createBoard(boardName)}>Create Board</button>
-            <button className="logout-button" onClick={handleLogout}>Logout</button>
+            <div className="side-main-content">
+                <div className="side-panel">
+                    <h2>Your Boards</h2>
+                    <button className="add-board-button" onClick={() => setShowBoardInput(true)}>+</button>
+                    {showBoardInput && (
+                        <div className="board-input-popup">
+                            <input 
+                                value={inputValue}
+                                onChange={e => setInputValue(e.target.value)}
+                                placeholder="Board Name"
+                            />
+                            <button onClick={() => {
+                                createBoard(inputValue);
+                                setShowBoardInput(false);
+                                setInputValue('');
+                            }}>Add Board</button>
+                            <button onClick={() => setShowBoardInput(false)}>Cancel</button>
+                        </div>
+                    )}
+                    <div className="boards-list">
+                        {boards.map(board => (
+                            <div 
+                                key={board.id} 
+                                className={`board-item ${activeBoard === board.id ? 'active' : ''}`} 
+                                onClick={() => setActiveBoard(board.id)}
+                            >
+                                {board.name}
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className="main-content">
+                    {activeBoard && (
+                        <div>
+                            <h1>{boards.find(b => b.id === activeBoard)?.name}</h1>
+                            {/* You can display other board details here */}
+                        </div>
+                    )}
+                </div>
+            </div>
         </div>
     );
 }

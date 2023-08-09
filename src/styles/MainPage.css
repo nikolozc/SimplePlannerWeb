@@ -1,32 +1,148 @@
 .main-container {
-    background-color: #2c2c2c; /* Dominant color */
-    min-height: 100vh;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-family: 'Arial', sans-serif;
+    height: 100vh;
+    background-color: #1b1b1b; /* Dominant */
+    color: #DAA520; /* Accent for text */
 }
 
-.main-header {
-    font-size: 2em;
-    margin-bottom: 20px;
-    color: #DAA520; /* Accent color for main heading */
+.top-panel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em;
+    background-color: #333333; /* Secondary */
+    border-bottom: 1px solid #DAA520; /* Accent for a subtle highlight */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.side-main-content {
+    display: flex;
+    flex: 1;
+}
+
+.side-panel {
+    flex-basis: 250px;
+    background-color: #333333; /* Secondary */
+    border-right: 1px solid #DAA520; /* Accent for a subtle separation */
+    padding: 1em;
+    overflow-y: auto;
+    transition: background-color 0.3s;
+}
+
+.side-panel:hover {
+    background-color: #2a2a2a; /* A slightly different shade for hover effect */
+}
+
+.main-content {
+    flex: 1;
+    background-color: #1b1b1b; /* Dominant */
+    padding: 1em;
+    overflow-y: auto;
+}
+
+.main-content > h1 {
+    text-align: center;
+    border-bottom: 2px solid #DAA520; /* Accent for a highlight */
+    padding-bottom: 10px;
+}
+
+.board-item {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.board-item:hover {
+    background-color: #2a2a2a; /* Slightly different shade for hover */
+    transform: scale(1.02); /* A slight enlargement for interactive feel */
+}
+
+.board-item.active {
+    background-color: #DAA520; /* Accent for active board */
+    color: #1b1b1b; /* Dominant for contrast against the accent background */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .logout-button {
-    background-color: #DAA520; /* Accent color */
+    background-color: #DAA520; /* Accent */
+    color: #1b1b1b; /* Dominant for contrast */
     border: none;
-    color: #2c2c2c; /* Dominant color for contrast */
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
-
-    /* Secondary color for hover effect */
+    transition: background-color 0.3s;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
 }
 
 .logout-button:hover {
-    background-color: #c8961d;
+    background-color: #bf9123; /* A shade different for hover effect */
+}
+
+.user-info {
+    padding: 5px 10px;
+    border-radius: 4px;
+    background-color: #1b1b1b; /* Dominant */
+    border: 1px solid #DAA520; /* Accent */
+}
+
+.add-board-button {
+    width: 40px;
+    height: 40px;
+    background-color: #DAA520; /* Accent */
+    border: none;
+    border-radius: 50%; /* Makes it circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    transition: background-color 0.3s;
+    margin-bottom: 10px;
+}
+
+.add-board-button:hover {
+    background-color: #bf9123; /* A shade different for hover effect */
+}
+
+/* Input for adding a board */
+.board-input-popup input {
+    padding: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #DAA520; /* Accent */
+    background-color: #333333; /* Secondary */
+    color: #DAA520; /* Accent for text */
+    border-radius: 4px;
+}
+
+.board-input-popup button {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+/* "Add Board" button (Primary action) */
+.board-input-popup button:nth-child(2) {
+    background-color: #DAA520; /* Accent */
+    color: #1b1b1b; /* Dominant for contrast */
+    margin-right: 10px;
+}
+
+.board-input-popup button:nth-child(2):hover {
+    background-color: #bf9123; /* A shade different for hover effect */
+}
+
+/* "Cancel" button (Secondary action) */
+.board-input-popup button:nth-child(3) {
+    background-color: #1b1b1b; /* Dominant */
+    color: #DAA520; /* Accent for text contrast */
+    margin-bottom: 10px;
+}
+
+.board-input-popup button:nth-child(3):hover {
+    background-color: #333333; /* Secondary for hover */
 }

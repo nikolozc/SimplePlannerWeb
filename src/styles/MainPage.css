@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
-    background-color: #1b1b1b; /* Dominant */
-    color: #DAA520; /* Accent for text */
+    background-color: #1b1b1b; 
+    color: #DAA520; 
 }
 
 .top-panel {
@@ -11,9 +11,13 @@
     justify-content: space-between;
     align-items: center;
     padding: 1em;
-    background-color: #333333; /* Secondary */
-    border-bottom: 1px solid #DAA520; /* Accent for a subtle highlight */
+    background-color: #333333; 
+    border-bottom: 1px solid #DAA520; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.top-panel:hover {
+    background-color: #2a2a2a; 
 }
 
 .side-main-content {
@@ -23,25 +27,25 @@
 
 .side-panel {
     flex-basis: 250px;
-    background-color: #333333; /* Secondary */
-    border-right: 1px solid #DAA520; /* Accent for a subtle separation */
+    background-color: #333333; 
+    border-right: 1px solid #DAA520; 
     padding: 1em;
     overflow-y: auto;
     transition: background-color 0.3s;
 }
 
 .side-panel:hover {
-    background-color: #2a2a2a; /* A slightly different shade for hover effect */
+    background-color: #2a2a2a; 
 }
 
 .main-content {
     flex-grow: 1;
-    background-color: #1b1b1b; /* Dominant */
+    background: linear-gradient(#202020, #0b0b0b); 
     padding: 1em;
     display: flex;
     flex-direction: column; /* Stacks children vertically */
     overflow-y: auto; /* Allow vertical scroll if needed */
-    align-items: center; /* Center children horizontally, this will center your h1 */
+    align-items: center; /* Center children horizontally, this will center h1 */
 }
 
 .main-content > h1 {
@@ -50,7 +54,7 @@
 }
 
 .list-container {
-    width: 100%; /* Utilize the full width */
+    width: 100%; /* full width */
     display: flex;
     flex-direction: row; /* Lists will be side-by-side */
     overflow-x: auto; /* Allow horizontal scroll when there are many lists */
@@ -67,19 +71,19 @@
 }
 
 .board-item:hover {
-    background-color: #2a2a2a; /* Slightly different shade for hover */
-    transform: scale(1.02); /* A slight enlargement for interactive feel */
+    background-color: #2a2a2a; 
+    transform: scale(1.02); /* A slight enlargement */
 }
 
 .board-item.active {
-    background-color: #DAA520; /* Accent for active board */
-    color: #1b1b1b; /* Dominant for contrast against the accent background */
+    background-color: #DAA520; 
+    color: #1b1b1b; 
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
 .logout-button {
-    background-color: #DAA520; /* Accent */
-    color: #1b1b1b; /* Dominant for contrast */
+    background-color: #DAA520; 
+    color: #1b1b1b; 
     border: none;
     padding: 10px 20px;
     border-radius: 4px;
@@ -89,20 +93,20 @@
 }
 
 .logout-button:hover {
-    background-color: #bf9123; /* A shade different for hover effect */
+    background-color: #bf9123; 
 }
 
 .user-info {
     padding: 5px 10px;
     border-radius: 4px;
-    background-color: #1b1b1b; /* Dominant */
-    border: 1px solid #DAA520; /* Accent */
+    background-color: #1b1b1b; 
+    border: 1px solid #DAA520;
 }
 
 .add-board-button {
     width: 40px;
     height: 40px;
-    background-color: #DAA520; /* Accent */
+    background-color: #DAA520; 
     border: none;
     border-radius: 50%; /* Makes it circular */
     display: flex;
@@ -115,7 +119,7 @@
 }
 
 .add-board-button:hover {
-    background-color: #bf9123; /* A shade different for hover effect */
+    background-color: #bf9123; 
 }
 
 /* Input for adding a board */
@@ -123,9 +127,9 @@
     padding: 10px;
     margin-top: 10px;
     margin-bottom: 10px;
-    border: 1px solid #DAA520; /* Accent */
-    background-color: #333333; /* Secondary */
-    color: #DAA520; /* Accent for text */
+    border: 1px solid #DAA520; 
+    background-color: #333333; 
+    color: #DAA520; 
     border-radius: 4px;
 }
 
@@ -139,61 +143,183 @@
 
 /* "Add Board" button (Primary action) */
 .board-input-popup button:nth-child(2) {
-    background-color: #DAA520; /* Accent */
-    color: #1b1b1b; /* Dominant for contrast */
+    background-color: #DAA520; 
+    color: #1b1b1b; 
     margin-right: 10px;
 }
 
 .board-input-popup button:nth-child(2):hover {
-    background-color: #bf9123; /* A shade different for hover effect */
+    background-color: #bf9123; 
 }
 
 /* "Cancel" button (Secondary action) */
 .board-input-popup button:nth-child(3) {
-    background-color: #1b1b1b; /* Dominant */
-    color: #DAA520; /* Accent for text contrast */
+    background-color: #1b1b1b; 
+    color: #DAA520; 
     margin-bottom: 10px;
 }
 
 .board-input-popup button:nth-child(3):hover {
-    background-color: #333333; /* Secondary for hover */
+    background-color: #333333; 
 }
 
 /* Lists are columns next to each other */
 .list {
-    background-color: #333333; /* Secondary color */
+    background-color: #333333; 
     border-radius: 8px;
     margin-right: 20px; /* Space between lists */
+    margin-bottom: 50px;
     min-width: 250px; /* Set a minimum width for lists to ensure they have some width even if empty */
     padding: 15px;
     flex-shrink: 0; /* Prevents flex items from shrinking smaller than their default size */
 }
 
 .list h2 {
-    color: #DAA520; /* Accent color for list titles */
+    color: #DAA520; 
     margin-bottom: 15px;
-    text-align: center;
-}
-
-.list:last-child {
-    margin-right: 0; /* No margin for the last list to avoid extra space at the end */
+    text-align: left;
 }
 
 /* Card styles */
 .card {
-    background-color: #1b1b1b; /* Dominant color for cards to contrast against the list's secondary color */
-    border: 2px solid #DAA520; /* Accent color border */
+    background-color: #1b1b1b; 
     border-radius: 5px;
     margin-bottom: 10px; /* Space between cards */
     padding: 10px;
 }
 
 .card h3 {
-    color: #DAA520; /* Accent color for card titles */
+    color: #DAA520; 
     margin-top: 0;
     margin-bottom: 10px;
 }
 
 .card p {
     margin-bottom: 0;
+}
+
+
+.add-new-list-button {
+    background-color: #333333; 
+    border: none;
+    border-radius: 4px;
+    color: #DAA520; 
+    cursor: pointer;
+    height: 40px; 
+    text-align: center; 
+    transition: background-color 0.3s;
+    width: 100px; 
+    flex-shrink: 0; /* Prevents the button from shrinking */
+}
+
+.add-new-list-button:hover {
+    background-color: #2a2a2a; 
+}
+
+
+.new-list {
+    background-color: #333333; 
+    border-radius: 8px;
+    margin-right: 20px; /* Space between this form and any other lists */
+    padding: 15px;
+    flex-shrink: 0; /* Prevents this item from shrinking smaller than its default size */
+    width: 180px;
+    height: 60px;
+}
+
+.new-list input {
+    width: 150px;
+    padding: 5px 10px;
+    margin-bottom: 10px; /* A bit of spacing between input fields */
+    border: 1px solid #DAA520; 
+    border-radius: 4px;
+    background-color: #1b1b1b; 
+    color: #DAA520;
+}
+
+.new-list button {
+    background-color: #DAA520; 
+    color: #1b1b1b; 
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px; /* A bit of space between buttons */
+    transition: background-color 0.3s;
+}
+
+.new-list button:hover {
+    background-color: #bf9123; 
+}
+
+.add-new-card-button {
+    background-color: #333333; 
+    border: none;
+    border-radius: 4px;
+    color: #DAA520; 
+    cursor: pointer;
+    height: 30px; 
+    text-align: center; 
+    transition: background-color 0.3s;
+    width: 120px;
+    margin-top: 10px; /* Additional spacing between cards and the add button */
+    flex-shrink: 0;
+    font-weight: bold;
+}
+
+.add-new-card-button:hover {
+    background-color: #2a2a2a; 
+}
+
+.new-card {
+    background-color: #333333; 
+    border-radius: 8px;
+    margin-top: 10px; 
+    padding: 10px;
+    flex-shrink: 0; 
+    width: 180px;
+}
+
+.new-card input {
+    width: 150px;
+    padding: 5px 10px;
+    margin-bottom: 5px; 
+    border: 1px solid #DAA520; 
+    border-radius: 4px;
+    background-color: #1b1b1b;
+    color: #DAA520; 
+}
+
+.new-card button {
+    background-color: #DAA520; 
+    color: #1b1b1b; 
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 5px; 
+    transition: background-color 0.3s;
+}
+
+.new-card button:hover {
+    background-color: #bf9123; 
+}
+
+.list-container::-webkit-scrollbar {
+    width: 5px; 
+}
+
+.list-container::-webkit-scrollbar-track {
+    background-color: #333333; /* Secondary color for track background */
+    border-radius: 4px;
+}
+
+.list-container::-webkit-scrollbar-thumb {
+    background-color: #DAA520; /* Accent color for the thumb */
+    border-radius: 4px;
+    border: 1px solid #1b1b1b; 
+}
+
+.list-container::-webkit-scrollbar-thumb:hover {
+    background-color: #bf9123; 
 }

@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import { signOut } from 'firebase/auth';
 import { auth, db } from './firebase'; 
-import { collection, addDoc, query, where, getDocs, getDoc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, query, where, getDocs, onSnapshot } from "firebase/firestore";
 import './styles/MainPage.css';
 
 function MainPage() {
-    const [boards, setBoards] = useState([]);
-    const [lists, setLists] = useState([]);
-    const [cards, setCards] = useState([]);
-    const [userInfo, setUserInfo] = useState(null);
-    const [showBoardInput, setShowBoardInput] = useState(false);
-    const [inputValue, setInputValue] = useState(''); //rename this to something better. Input for new boards
-    const [activeBoard, setActiveBoard] = useState(null);
-    const [newListName, setNewListName] = useState('');
-    const [newCardName, setNewCardName] = useState('');
-    const [newCardDescription, setNewCardDescription] = useState('');
+    const [boards, setBoards] = useState([]); // all boards tied to the user
+    const [lists, setLists] = useState([]); // all lists
+    const [cards, setCards] = useState([]); // all cards
 
-    useEffect(() => {
-        if(auth.currentUser) {
-            setUserInfo(auth.currentUser.displayName || auth.currentUser.email);
-        }
-    }, [auth.currentUser]);
+    const [showBoardInput, setShowBoardInput] = useState(false); // state to track if input fields for adding new boards is visible
+    const [showListInput, setShowListInput] = useState(false); // state to track if input fields for adding new lists is visible
+    const [showCardInput, setShowCardInput] = useState(false); // state to track if input fields for adding new cards is visible
+    const [activeList, setActiveList] = useState(null); // state to track which list's "Add New Card" was clicked.
 
+    const [inputValue, setInputValue] = useState(''); // input for new board name
+    const [activeBoard, setActiveBoard] = useState(null); // state to track which board is being viewed in the main container
+    const [newListName, setNewListName] = useState(''); // input for new list name
+    const [newCardName, setNewCardName] = useState(''); // input for new card name
+    const [newCardDescription, setNewCardDescription] = useState(''); // input for new card description
+
+
+    // logout from account using firebase authentication
     const handleLogout = async () => {
         try {
             await signOut(auth);
@@ -31,6 +31,7 @@ function MainPage() {
         }
     };
 
+    // creates new board and adds it in db under current user
     const createBoard = async (boardName) => {
         const owner = auth.currentUser.uid;  // Fetching user ID from the auth instance
         try {
@@ -45,6 +46,7 @@ function MainPage() {
         }
     };
 
+    // creates new list and adds it in db under current active board
     const createList = async (boardId, listName, order) => {
         try {
             await addDoc(collection(db, 'boards', boardId, 'lists'), {
@@ -57,6 +59,7 @@ function MainPage() {
         }
     };
 
+    // creates new card and adds it in db under current active list
     const createCard = async (boardId, listId, cardName, cardDescription = "", order) => {
         try {
             const newCardRef = await addDoc(collection(db, 'boards', boardId, 'lists', listId, 'cards'), {
@@ -74,6 +77,7 @@ function MainPage() {
         }
     };
 
+    // gets all the boards from db under current user and adds it to boards
     const fetchUserBoards = async () => {
         const userId = auth.currentUser.uid; // Fetching user ID from the auth instance
         const boardQuery = query(collection(db, "boards"), where("members", "array-contains", userId));
@@ -86,6 +90,7 @@ function MainPage() {
         setBoards(fetchedBoards);
     };
 
+    // gets all the lists from db under current active board
     const fetchListsForBoard = async (boardId) => {
         const lists = [];
         const listsSnapshot = await getDocs(collection(db, 'boards', boardId, 'lists'));
@@ -99,6 +104,7 @@ function MainPage() {
         return lists.sort((a, b) => a.order - b.order);  // sorting by order
     };
 
+    // gets all the cards from db under current active list
     const fetchCardsForList = async (boardId, listId) => {
         const cards = [];
         const cardsSnapshot = await getDocs(collection(db, 'boards', boardId, 'lists', listId, 'cards'));
@@ -112,6 +118,8 @@ function MainPage() {
         return cards.sort((a, b) => a.order - b.order);  // sorting by order
     };
 
+    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+    // Need to set this up for lists and cards as well for realtime changes when the ability to add more users to the same board is added
     useEffect(() => {
         // Fetching user boards on component mount
         fetchUserBoards();
@@ -139,6 +147,10 @@ function MainPage() {
         return unsubscribe;
     };
 
+    // This useEffect is responsible for fetching the lists associated with the currently active board (defined by activeBoard).
+    // Once the lists are fetched, it further fetches the cards for each of those lists.
+    // The fetched lists and cards are then set to the component's local state.
+    // The function is triggered every time the activeBoard changes.
     useEffect(() => {
         if (activeBoard) {
             const getLists = async () => {
@@ -161,7 +173,7 @@ function MainPage() {
         <div className="main-container">
             <div className="top-panel">
                 <button className="logout-button" onClick={handleLogout}>Logout</button>
-                <span className="user-info">{userInfo}</span>
+                <span className="user-info">{auth.currentUser?.displayName || auth.currentUser?.email}</span>
             </div>
             <div className="side-main-content">
                 <div className="side-panel">
@@ -200,59 +212,88 @@ function MainPage() {
                     {activeBoard && (
                         <>
                             <h1>{boards.find(b => b.id === activeBoard)?.name}</h1>
-                            <div className="list-container">
-                                {lists.map(list => (
-                                    <div key={list.id} className="list">
-                                        <h2>{list.name}</h2>
-                                        <div className="cards">
-                                            {cards.filter(card => card.listId === list.id).map(card => (
-                                                <div key={card.id} className="card">
-                                                    <h3>{card.name}</h3>
-                                                    <p>{card.description}</p>
-                                                    {/* Render other card details here */}
-                                                </div>
-                                            ))}
-
-                                            <div className="new-card">
-                                                <input 
-                                                    value={newCardName} 
-                                                    onChange={e => setNewCardName(e.target.value)} 
-                                                    placeholder="Card Name" 
-                                                />
-                                                <input 
-                                                    value={newCardDescription} 
-                                                    onChange={e => setNewCardDescription(e.target.value)} 
-                                                    placeholder="Card Description" 
-                                                />
-                                                <button onClick={async () => {
-                                                    await createCard(activeBoard, list.id, newCardName, newCardDescription, cards.filter(card => card.listId === list.id).length);
-                                                    setNewCardName('');  // Clear the input
-                                                    setNewCardDescription('');  // Clear the input
-                                                }}>
-                                                    Add Card
-                                                </button>
+                                <div className="list-container">
+                                    {lists.map(list => (
+                                        <div key={list.id} className="list">
+                                            <h2>{list.name}</h2>
+                                            <div className="cards">
+                                                {cards.filter(card => card.listId === list.id).map(card => (
+                                                    <div key={card.id} className="card">
+                                                        <h3>{card.name}</h3>
+                                                        <p>{card.description}</p>
+                                                    </div>
+                                                ))}
+                                                {showCardInput && activeList === list.id ? (
+                                                    <div className="new-card">
+                                                        <input 
+                                                            value={newCardName} 
+                                                            onChange={e => setNewCardName(e.target.value)} 
+                                                            placeholder="Card Name" 
+                                                        />
+                                                        <input 
+                                                            value={newCardDescription} 
+                                                            onChange={e => setNewCardDescription(e.target.value)} 
+                                                            placeholder="Card Description" 
+                                                        />
+                                                        <button onClick={async () => {
+                                                            await createCard(activeBoard, list.id, newCardName, newCardDescription, cards.filter(card => card.listId === list.id).length);
+                                                            setNewCardName('');  
+                                                            setNewCardDescription('');
+                                                            setShowCardInput(false);
+                                                            setActiveList(null);
+                                                        }}>
+                                                            Add Card
+                                                        </button>
+                                                        <button onClick={() => {
+                                                            setShowCardInput(false);
+                                                            setNewCardName('');
+                                                            setNewCardDescription('');
+                                                        }}>
+                                                            Cancel
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <button className='add-new-card-button' onClick={() => {
+                                                        setActiveList(list.id);
+                                                        setShowCardInput(true);
+                                                    }}>
+                                                        Add New Card
+                                                    </button>
+                                                )}
                                             </div>
                                         </div>
+                                    ))}
+                                {showListInput ? (
+                                    <div className="new-list">
+                                        <input 
+                                            value={newListName} 
+                                            onChange={e => setNewListName(e.target.value)} 
+                                            placeholder="New List Name" 
+                                        />
+                                        <button onClick={async () => {
+                                            await createList(activeBoard, newListName, lists.length);
+                                            setNewListName('');  // Clear the input once the list is added
+
+                                            // Refetch the lists for the board after adding a new list
+                                            const updatedLists = await fetchListsForBoard(activeBoard);
+                                            setLists(updatedLists);
+
+                                            setShowListInput(false); // Hide the input form
+                                        }}>
+                                            Add List
+                                        </button>
+                                        <button onClick={() => {
+                                            setShowListInput(false); // Hide the input form
+                                            setNewListName(''); // Clear the input value
+                                        }}>
+                                            Cancel
+                                        </button>
                                     </div>
-                                ))}
-                            </div>
-
-                            <div className="new-list">
-                                <input 
-                                    value={newListName} 
-                                    onChange={e => setNewListName(e.target.value)} 
-                                    placeholder="New List Name" 
-                                />
-                                <button onClick={async () => {
-                                    await createList(activeBoard, newListName, lists.length);
-                                    setNewListName('');  // Clear the input once the list is added
-
-                                    // Refetch the lists for the board after adding a new list
-                                    const updatedLists = await fetchListsForBoard(activeBoard);
-                                    setLists(updatedLists);
-                                }}>
-                                    Add List
-                                </button>
+                                ) : (
+                                    <button className='add-new-list-button' onClick={() => setShowListInput(true)}>
+                                        Add New List
+                                    </button>
+                                )}
                             </div>
                         </>
                     )}

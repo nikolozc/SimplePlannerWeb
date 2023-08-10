@@ -35,17 +35,29 @@
 }
 
 .main-content {
-    flex: 1;
+    flex-grow: 1;
     background-color: #1b1b1b; /* Dominant */
     padding: 1em;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Stacks children vertically */
+    overflow-y: auto; /* Allow vertical scroll if needed */
+    align-items: center; /* Center children horizontally, this will center your h1 */
 }
 
 .main-content > h1 {
     text-align: center;
-    border-bottom: 2px solid #DAA520; /* Accent for a highlight */
     padding-bottom: 10px;
 }
+
+.list-container {
+    width: 100%; /* Utilize the full width */
+    display: flex;
+    flex-direction: row; /* Lists will be side-by-side */
+    overflow-x: auto; /* Allow horizontal scroll when there are many lists */
+    justify-content: flex-start; /* Align lists to the start */
+}
+
+
 
 .board-item {
     padding: 10px;
@@ -145,4 +157,43 @@
 
 .board-input-popup button:nth-child(3):hover {
     background-color: #333333; /* Secondary for hover */
+}
+
+/* Lists are columns next to each other */
+.list {
+    background-color: #333333; /* Secondary color */
+    border-radius: 8px;
+    margin-right: 20px; /* Space between lists */
+    min-width: 250px; /* Set a minimum width for lists to ensure they have some width even if empty */
+    padding: 15px;
+    flex-shrink: 0; /* Prevents flex items from shrinking smaller than their default size */
+}
+
+.list h2 {
+    color: #DAA520; /* Accent color for list titles */
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.list:last-child {
+    margin-right: 0; /* No margin for the last list to avoid extra space at the end */
+}
+
+/* Card styles */
+.card {
+    background-color: #1b1b1b; /* Dominant color for cards to contrast against the list's secondary color */
+    border: 2px solid #DAA520; /* Accent color border */
+    border-radius: 5px;
+    margin-bottom: 10px; /* Space between cards */
+    padding: 10px;
+}
+
+.card h3 {
+    color: #DAA520; /* Accent color for card titles */
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.card p {
+    margin-bottom: 0;
 }
